@@ -1,8 +1,92 @@
-// [REL-LSK-01][A01][NEW] Hub Sport LSK ultra light MVP
+﻿// [REL-LSK-01][A01][NEW] Hub Sport LSK ultra light MVP
 (function () {
   const config = window.HUB_SPORT_LSK_CONFIG || {};
-  const IPV_LOGO = "../assets/logo-ipv-oficial.png";
+  const IPV_LOGO = "assets/logo-ipv-oficial.png";
+  const DEMO_BADGE_SESSION_KEY = "hubSportDemoBadgeState";
   const LOADING_STEP_COUNT = 5;
+  const STORY_PHASES = [
+    { key: "portada", title: "Portada", caption: "Abriendo escaparate del evento..." },
+    { key: "equipo", title: "Equipo", caption: "Conectando identidad de equipo..." },
+    { key: "rama", title: "Rama", caption: "Ajustando rama principal..." },
+    { key: "categoria", title: "Categoría", caption: "Armando categorías activas..." },
+    { key: "calendario", title: "Calendario", caption: "Sincronizando tiempos..." },
+    { key: "confirmacion", title: "Confirmación", caption: "Validando consistencia visual..." },
+    { key: "matching", title: "Matching", caption: "Preparando cruces del evento..." },
+    { key: "match", title: "Match", caption: "Afinando enfrentamientos..." },
+    { key: "cierre", title: "Cierre", caption: "Finalizando narrativa del evento..." }
+  ];
+  const STORY_TEXT_MAP = {
+    base: {
+      portada: { title: "Portada", caption: "Abriendo escaparate del evento..." },
+      equipo: { title: "Equipo", caption: "Conectando identidad de equipo..." },
+      rama: { title: "Rama", caption: "Ajustando rama principal..." },
+      categoria: { title: "Categoría", caption: "Armando categorías activas..." },
+      calendario: { title: "Calendario", caption: "Sincronizando tiempos..." },
+      confirmacion: { title: "Confirmación", caption: "Validando consistencia visual..." },
+      matching: { title: "Matching", caption: "Preparando cruces del evento..." },
+      match: { title: "Match", caption: "Afinando enfrentamientos..." },
+      cierre: { title: "Cierre", caption: "Finalizando narrativa del evento..." }
+    },
+    categoria: {
+      "i4-1": { title: "Categoría", caption: "Configurando iniciación..." },
+      "i4-2": { title: "Categoría", caption: "Configurando infantil..." },
+      "i4-3": { title: "Categoría", caption: "Configurando secundaria femenil..." },
+      "i4-4": { title: "Categoría", caption: "Configurando secundaria varonil..." },
+      "i4-5": { title: "Categoría", caption: "Configurando preparatoria femenil..." },
+      "i4-6": { title: "Categoría", caption: "Configurando preparatoria varonil..." },
+      "i4-7": { title: "Categoría", caption: "Configurando 3ª fuerza..." },
+      "i4-8": { title: "Categoría", caption: "Configurando alto rendimiento..." }
+    }
+  };
+  const STORY_ASSET_MAP = {
+    base: {
+      portada: "assets/base/ipf_img01_portada.webp",
+      equipo: "assets/base/ipf_img02_equipo.webp",
+      calendario: "assets/base/ipf_img05_calendario.webp",
+      confirmacion: "assets/base/ipf_img06_confirmacion.webp",
+      matching: "assets/base/ipf_img07_matching.webp",
+      match: "assets/base/ipf_img08_match.webp",
+      cierre: "assets/base/ipf_img09_cierre.webp"
+    },
+    rama: {
+      femenil: "assets/base/ipf_img03_rama_femenil_mixed.webp",
+      varonil: "assets/base/ipf_img03_rama_varonil_mixed.webp",
+      mixto: "assets/base/ipf_img03_rama_mixto.webp"
+    },
+    categoria: {
+      "i4-1": "assets/categoria/ipf_img04_cat_iniciacion.webp",
+      "i4-2": "assets/categoria/ipf_img04_cat_infantil.webp",
+      "i4-3": "assets/categoria/ipf_img04_cat_secundaria_femenil.webp",
+      "i4-4": "assets/categoria/ipf_img04_cat_secundaria_varonil.webp",
+      "i4-5": "assets/categoria/ipf_img04_cat_prepa_femenil.webp",
+      "i4-6": "assets/categoria/ipf_img04_cat_prepa_varonil.webp",
+      "i4-7": {
+        femenil: "assets/categoria/ipf_img04_cat_prepa_femenil.webp",
+        varonil: "assets/categoria/ipf_img04_cat_prepa_varonil.webp"
+      },
+      "i4-8": {
+        mixto: "assets/categoria/ipf_img04_cat_alto_mixto.webp",
+        femenil: "assets/categoria/ipf_img04_cat_competitivo_fem.webp",
+        varonil: "assets/categoria/ipf_img04_cat_competitivo_var.webp"
+      },
+      iniciacion: "assets/categoria/ipf_img04_cat_iniciacion.webp",
+      infantil: "assets/categoria/ipf_img04_cat_infantil.webp",
+      secundaria_femenil: "assets/categoria/ipf_img04_cat_secundaria_femenil.webp",
+      secundaria_varonil: "assets/categoria/ipf_img04_cat_secundaria_varonil.webp",
+      prepa_femenil: "assets/categoria/ipf_img04_cat_prepa_femenil.webp",
+      prepa_varonil: "assets/categoria/ipf_img04_cat_prepa_varonil.webp",
+      competitivo: {
+        femenil: "assets/categoria/ipf_img04_cat_competitivo_fem.webp",
+        varonil: "assets/categoria/ipf_img04_cat_competitivo_var.webp"
+      },
+      alto: {
+        mixto: "assets/categoria/ipf_img04_cat_alto_mixto.webp",
+        femenil: "assets/categoria/ipf_img04_cat_competitivo_fem.webp",
+        varonil: "assets/categoria/ipf_img04_cat_competitivo_var.webp"
+      },
+      alto_mixto: "assets/categoria/ipf_img04_cat_alto_mixto.webp"
+    }
+  };
   const CATEGORY_ORDER = [
     "Menores (Cachi/Mini/Micro)",
     "Infantil Menor",
@@ -78,7 +162,7 @@
     lastMissingLiveSignature: "",
     sponsorLogoUrls: [],
     externalLogoEntries: [],
-    viewMode: "pre",
+    viewMode: "real",
     presenceRuntime: {
       sessionId: "",
       connected: false,
@@ -90,7 +174,39 @@
     glassOpacity: String((config.settings && config.settings.glassOpacity) || "0.08"),
     googleReady: false,
     tooltipHideTimer: null,
-    brandTooltipHideTimer: null
+    brandTooltipHideTimer: null,
+    runtime: {
+      urlParams: { eventAlias: "", urlEmail: "", pudzle: "" },
+      eventAlias: "ipv",
+      eventName: "IPV",
+      eventActive: 1,
+      eventLogo: IPV_LOGO,
+      eventsCatalog: [],
+      dataMode: "",
+      demoBadgeMap: null,
+      puzzleMode: false,
+      puzzleVariant: "default",
+      puzzleStarted: false,
+      puzzleTimer: null,
+      puzzlePhaseIndex: 0
+    },
+    summaryHover: {
+      node: null,
+      hideTimer: null,
+      activeType: ""
+    },
+    rotation: {
+      sectionATimer: null,
+      sectionBTimer: null,
+      pausedA: false,
+      pausedB: false
+    },
+    loadingStory: {
+      tilesBuilt: false,
+      lastFrameSignature: "",
+      currentFrame: null,
+      currentStorySrc: ""
+    }
   };
   const curatedFallback = buildCuratedFallbackEntries();
 
@@ -99,11 +215,17 @@
     loadingLabel: document.getElementById("loadingLabel"),
     loadingProgressTrack: document.getElementById("loadingProgressTrack"),
     loadingPercent: document.getElementById("loadingPercent"),
+    loadingStoryPanel: document.getElementById("loadingStoryPanel"),
+    loadingStoryImage: document.getElementById("loadingStoryImage"),
+    loadingStoryStage: document.getElementById("loadingStoryStage"),
+    loadingStoryCaption: document.getElementById("loadingStoryCaption"),
+    loadingStoryPuzzle: document.getElementById("loadingStoryPuzzle"),
     sidebar: document.getElementById("sidebar"),
     brandMark: document.getElementById("brandMark"),
     brandMarkTooltip: document.getElementById("brandMarkTooltip"),
     sidebarToggle: document.getElementById("sidebarToggle"),
     sourceEmailSelect: document.getElementById("sourceEmailSelect"),
+    eventSelect: document.getElementById("eventSelect"),
     sourceEmailValue: document.getElementById("sourceEmailValue"),
     sourceModeValue: document.getElementById("sourceModeValue"),
     glassOpacityRange: document.getElementById("glassOpacityRange"),
@@ -122,8 +244,11 @@
     sponsorsCarousel: document.getElementById("sponsorsCarousel"),
     inscribedLogosRail: document.getElementById("inscribedLogosRail"),
     preCount: document.getElementById("preCount"),
+    preLabel: document.getElementById("preLabel"),
     inscribedCount: document.getElementById("inscribedCount"),
+    insLabel: document.getElementById("insLabel"),
     categoryCount: document.getElementById("categoryCount"),
+    catLabel: document.getElementById("catLabel"),
     onlineCount: document.getElementById("onlineCount"),
     onlineStatus: document.getElementById("onlineStatus"),
     viewModePreBtn: document.getElementById("viewModePreBtn"),
@@ -154,6 +279,12 @@
     document.body.classList.add("app-loading");
     try {
       setLoadingProgress(0);
+      state.runtime.urlParams = getUrlParams();
+      state.runtime.puzzleMode = isPuzzleModeEnabled();
+      state.runtime.puzzleVariant = resolvePuzzleVariant();
+      await resolveEventContext();
+      await hydrateEventLogo();
+      applyEventBranding();
       state.loggedUser = getSessionUser();
       state.viewMode = getInitialViewMode();
       await loadShowcaseSources();
@@ -163,6 +294,7 @@
       await waitForFonts();
       setLoadingProgress(3);
       state.activeSourceEmail = getInitialSourceEmail();
+      syncUrl();
       hydrateVisualControls();
       applyGlass();
       bindEvents();
@@ -175,38 +307,141 @@
       setLoadingProgress(5);
       await waitMs(140);
     } finally {
-      window.requestAnimationFrame(function () {
-        document.body.classList.remove("app-loading");
-      });
+      if (!state.runtime.puzzleMode) {
+        hideLoader();
+      } else {
+        showPuzzleStartButton();
+        startPuzzleModeSequence(5000, false);
+      }
     }
   }
 
   async function loadShowcaseSources() {
-    if (state.viewMode === "demo" || shouldUseDemoData()) {
-      const demo = buildDemoShowcaseSources();
-      applyShowcaseSources(demo.preRegisteredRows, demo.teamRows, "demo-curated");
-      return;
-    }
-    try {
-      const remote = await fetchRemoteShowcaseSources();
-      const preRows = remote.preRegisteredRows || [];
-      const teamRows = remote.teamRows || [];
-      if (!preRows.length && !teamRows.length) throw new Error("bootstrap sin filas para Hub Sport LSK");
-      applyShowcaseSources(preRows, teamRows, "apps-script-bootstrap");
-    } catch (error) {
-      console.warn("[HubSportLSK] fallback a dataset demo por error de fuente remota:", error);
-      applyShowcaseSources(PRE_REGISTERED_SOURCE, TEAMS_SOURCE, "demo-fallback");
-    }
+    const result = await resolveDataPipeline();
+    applyShowcaseSources(result.preRegisteredRows || [], result.teamRows || [], result.mode || "unknown");
+    state.runtime.eventActive = Number(result.eventActive == null ? 1 : result.eventActive) ? 1 : 0;
   }
 
   function shouldUseDemoData() {
     return Boolean(config.dataSource && config.dataSource.useDemoData);
   }
 
+  function getUrlParams() {
+    const params = new URLSearchParams(window.location.search || "");
+    return {
+      eventAlias: String(params.get("event") || "").trim().toLowerCase(),
+      urlEmail: normalizeEmail(params.get("email") || ""),
+      demoMode: String(params.get("demoMode") || "").trim().toLowerCase(),
+      pudzle: String(params.get("pudzle") || "").trim().toLowerCase()
+    };
+  }
+
+  function isPuzzleModeEnabled() {
+    const mode = String(state.runtime.urlParams && state.runtime.urlParams.pudzle || "").trim().toLowerCase();
+    return mode === "on" || mode === "categoria";
+  }
+
+  function resolvePuzzleVariant() {
+    const mode = String(state.runtime.urlParams && state.runtime.urlParams.pudzle || "").trim().toLowerCase();
+    if (mode === "categoria") return "categoria";
+    return "default";
+  }
+
+  async function resolveEventContext() {
+    const urlAlias = String(state.runtime.urlParams.eventAlias || "").trim().toLowerCase();
+    const sheetsData = await loadEventsFromSheets();
+    const sheetsAlias = String(sheetsData.defaultEventAlias || "").trim().toLowerCase();
+    const configAlias = String((config.events && config.events.defaultEventAlias) || "").trim().toLowerCase();
+    const fallbackAlias = "ipv";
+    const resolvedAlias = urlAlias || sheetsAlias || configAlias || fallbackAlias;
+    state.runtime.eventAlias = resolvedAlias;
+    state.runtime.eventsCatalog = Array.isArray(sheetsData.events) ? sheetsData.events : [];
+    const activeEvent = state.runtime.eventsCatalog.find(function (item) {
+      return String(item.event_alias || "").trim().toLowerCase() === resolvedAlias;
+    }) || null;
+    state.runtime.eventName = String(
+      (activeEvent && activeEvent.event_name) ||
+      (config.events && config.events.namesByAlias && config.events.namesByAlias[resolvedAlias]) ||
+      resolvedAlias.toUpperCase()
+    ).trim();
+    const activeFlag = activeEvent && activeEvent.event_active;
+    state.runtime.eventActive = Number(activeFlag == null ? 1 : activeFlag) ? 1 : 0;
+  }
+
+  async function loadEventsFromSheets() {
+    const spreadsheetId = String((config.events && config.events.spreadsheetId) || "").trim();
+    const settingsSheet = String((config.events && config.events.settingsSheet) || "Settings").trim();
+    const appsUrl = String(config.appsScriptUrl || "").trim();
+    if (!appsUrl || !spreadsheetId) return { defaultEventAlias: "", events: [] };
+    try {
+      const url = appsUrl
+        + "?action=getSettings"
+        + "&spreadsheetId=" + encodeURIComponent(spreadsheetId)
+        + "&sheet=" + encodeURIComponent(settingsSheet);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("settings http " + response.status);
+      const raw = await response.json();
+      const payload = unwrapResponse(raw);
+      const rows = Array.isArray(payload && payload.settings) ? payload.settings
+        : Array.isArray(payload && payload.rows) ? payload.rows
+          : Array.isArray(payload) ? payload : [];
+      const defaultRow = rows.find(function (row) {
+        return normalizeKey(getField(row, ["key", "Key", "clave"])) === "event";
+      }) || null;
+      const defaultEventAlias = String(getField(defaultRow, ["value", "Value", "valor"]) || "").trim().toLowerCase();
+      const events = Array.isArray(payload && payload.events) ? payload.events : [];
+      return { defaultEventAlias: defaultEventAlias, events: events };
+    } catch (error) {
+      console.warn("[HubSport] settings de eventos no disponibles:", error);
+      return { defaultEventAlias: "", events: [] };
+    }
+  }
+
+  function resolveViewMode(mode) {
+    if (mode === "demo") return "demo";
+    return "real";
+  }
+
+  async function resolveDataPipeline() {
+    const mode = resolveViewMode(state.viewMode);
+    const eventAlias = String(state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    if (eventAlias === "ipv") {
+      if (mode === "demo" || shouldUseDemoData()) {
+        const demoIpv = await resolveDemoDataset();
+        return { preRegisteredRows: demoIpv.preRegisteredRows, teamRows: demoIpv.teamRows, mode: "demo-ipv", eventActive: 1 };
+      }
+      try {
+        const remoteIpv = await fetchRemoteShowcaseSources(eventAlias);
+        const preRowsIpv = remoteIpv.preRegisteredRows || [];
+        const teamRowsIpv = remoteIpv.teamRows || [];
+        if (!preRowsIpv.length && !teamRowsIpv.length) throw new Error("bootstrap sin filas para evento");
+        return { preRegisteredRows: preRowsIpv, teamRows: teamRowsIpv, mode: "apps-script-bootstrap-ipv", eventActive: 1 };
+      } catch (error) {
+        console.warn("[HubSport] fallback IPV a dataset demo por error de fuente remota:", error);
+        return { preRegisteredRows: PRE_REGISTERED_SOURCE, teamRows: TEAMS_SOURCE, mode: "demo-fallback-ipv", eventActive: 1 };
+      }
+    }
+    if (mode === "real") {
+      try {
+        const remote = await fetchRemoteShowcaseSources(eventAlias);
+        const preRows = remote.preRegisteredRows || [];
+        const teamRows = remote.teamRows || [];
+        if (!preRows.length && !teamRows.length) throw new Error("bootstrap sin filas para evento");
+        return { preRegisteredRows: preRows, teamRows: teamRows, mode: "apps-script-bootstrap-real", eventActive: state.runtime.eventActive };
+      } catch (error) {
+        console.warn("[HubSport] modo REAL sin datos remotos. fallback seguro a vacío:", error);
+        return { preRegisteredRows: [], teamRows: [], mode: "real-empty-fallback", eventActive: state.runtime.eventActive };
+      }
+    }
+    const demo = await resolveDemoDataset();
+    return { preRegisteredRows: demo.preRegisteredRows, teamRows: demo.teamRows, mode: "demo-non-ipv", eventActive: 1 };
+  }
+
   function applyShowcaseSources(preRegisteredRows, teamRows, mode) {
+    state.runtime.dataMode = String(mode || "");
     state.sourceProfiles = (preRegisteredRows || []).map(normalizePreRegisteredRecord).filter(function (item) { return item.email; });
     state.showcaseEntries = buildShowcaseEntries(state.sourceProfiles, (teamRows || []).map(normalizeTeamRecord));
-    console.info("[HubSportLSKDataSource]", {
+    console.info("[HubSportDataSource]", {
       mode: mode,
       preRegisteredCount: state.sourceProfiles.length,
       teamsCount: uniqueBy((teamRows || []).map(normalizeTeamRecord), function (team) { return String(team.id || team.name || ""); }).length,
@@ -214,27 +449,48 @@
     });
   }
 
-  async function fetchRemoteShowcaseSources() {
+  async function fetchRemoteShowcaseSources(eventAlias) {
     const url = String(config.appsScriptUrl || "").trim();
     if (!url) throw new Error("appsScriptUrl no configurado");
-    const response = await fetch(url + "?action=bootstrap");
+    const alias = String(eventAlias || state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    const response = await fetch(url + "?action=bootstrap&event=" + encodeURIComponent(alias));
     const json = await response.json();
     const payload = unwrapResponse(json);
-    const preRowsRaw = payload.preRegisteredTeams || payload.equiposInscritos || payload.preRegistered || payload.inscritos || [];
-    const teamRowsRaw = payload.teams || payload.Teams || payload.teamsRows || [];
+    const preRowsRaw = (payload.preRegisteredTeams || payload.equiposInscritos || payload.preRegistered || payload.inscritos || []).filter(function (row) {
+      return rowMatchesEventAlias(row, alias);
+    });
+    const teamRowsRaw = (payload.teams || payload.Teams || payload.teamsRows || []).filter(function (row) {
+      return rowMatchesEventAlias(row, alias);
+    });
     return {
       preRegisteredRows: (preRowsRaw || []).map(normalizeIncomingPreRegisteredRow),
       teamRows: (teamRowsRaw || []).map(normalizeIncomingTeamRow)
     };
   }
 
+  function rowMatchesEventAlias(row, eventAlias) {
+    const target = String(eventAlias || "").trim().toLowerCase();
+    if (!target) return true;
+    const rowAlias = normalizeEventAliasFromRow(row);
+    if (!rowAlias) return true;
+    return rowAlias === target;
+  }
+
+  function normalizeEventAliasFromRow(row) {
+    const alias = getField(row, ["eventAlias", "event_alias", "event", "alias", "evento", "eventName", "event_name"]);
+    const clean = String(alias || "").trim().toLowerCase();
+    if (!clean) return "";
+    return clean.replace(/\s+/g, "-");
+  }
+
   function resolvePresenceConfig(input) {
-    const env = String(input.env || "local").trim() || "local";
+    const requestedEnv = String(input.env || "auto").trim() || "auto";
+    const env = detectPresenceEnv(requestedEnv);
     const endpointByEnv = input.endpointByEnv || {};
     return {
       enabled: input.enabled !== false,
       env: env,
-      roomId: String(input.roomId || "hub-sport-lsk-global").trim() || "hub-sport-lsk-global",
+      roomId: String(input.roomId || "hub-sport-global").trim() || "hub-sport-global",
       heartbeatMs: Number(input.heartbeatMs) || 15000,
       countRefreshMs: Number(input.countRefreshMs) || 10000,
       staleTtlMs: Number(input.staleTtlMs) || 35000,
@@ -245,6 +501,14 @@
         requireConsent: !input.tracking || input.tracking.requireConsent !== false
       }
     };
+  }
+
+  function detectPresenceEnv(requestedEnv) {
+    if (requestedEnv && requestedEnv !== "auto") return requestedEnv;
+    const hostname = String(window.location.hostname || "").toLowerCase();
+    if (!hostname || hostname === "localhost" || hostname === "127.0.0.1") return "local";
+    if (hostname.endsWith(".workers.dev") || hostname.includes("staging")) return "staging";
+    return "prod";
   }
 
   function announcePresenceConfig() {
@@ -261,7 +525,7 @@
   function bindEvents() {
     el.sidebarToggle.addEventListener("click", toggleSidebar);
     if (el.viewModePreBtn) {
-      el.viewModePreBtn.addEventListener("click", function () { setViewMode("pre"); });
+      el.viewModePreBtn.addEventListener("click", function () { setViewMode("real"); });
     }
     if (el.viewModeDemoBtn) {
       el.viewModeDemoBtn.addEventListener("click", function () { setViewMode("demo"); });
@@ -284,6 +548,23 @@
     if (el.sectionBNextBtn) {
       el.sectionBNextBtn.addEventListener("click", function () {
         moveSectionBCategory(1);
+      });
+    }
+    if (el.eventSelect) {
+      el.eventSelect.addEventListener("change", async function () {
+        const alias = String(el.eventSelect.value || "").trim().toLowerCase();
+        if (!alias || alias === state.runtime.eventAlias) return;
+        state.runtime.eventAlias = alias;
+        state.runtime.eventName = alias.toUpperCase();
+        state.activeCategoryIndex = 0;
+        state.activeDeckOffset = 0;
+        state.activeSectionBIndex = 0;
+        state.activeSectionBDeckOffset = 0;
+        state.deckCache = {};
+        await loadShowcaseSources();
+        state.activeSourceEmail = getInitialSourceEmail();
+        syncUrl();
+        renderAll();
       });
     }
     el.heroLoginBtn.addEventListener("click", function () {
@@ -321,6 +602,12 @@
       logout();
     });
     el.sourceEmailSelect.addEventListener("change", function () {
+      if (resolveViewMode(state.viewMode) === "demo") {
+        state.activeSourceEmail = "";
+        syncUrl();
+        renderAll();
+        return;
+      }
       state.activeSourceEmail = el.sourceEmailSelect.value || "";
       state.activeCategoryIndex = 0;
       state.activeDeckOffset = 0;
@@ -329,6 +616,27 @@
       syncUrl();
       renderAll();
     });
+    if (el.sectionADeck) {
+      el.sectionADeck.addEventListener("mouseenter", function () {
+        state.rotation.pausedA = true;
+        el.sectionADeck.classList.add("is-paused");
+      });
+      el.sectionADeck.addEventListener("mouseleave", function () {
+        state.rotation.pausedA = false;
+        el.sectionADeck.classList.remove("is-paused");
+      });
+    }
+    if (el.sectionBDeck) {
+      el.sectionBDeck.addEventListener("mouseenter", function () {
+        state.rotation.pausedB = true;
+        el.sectionBDeck.classList.add("is-paused");
+      });
+      el.sectionBDeck.addEventListener("mouseleave", function () {
+        state.rotation.pausedB = false;
+        el.sectionBDeck.classList.remove("is-paused");
+      });
+    }
+    initSummaryHover();
     document.addEventListener("click", function (event) {
       if (el.loginDropdown.classList.contains("hidden")) return;
       if (!el.loginDropdown.contains(event.target) && !el.heroLoginBtn.contains(event.target)) {
@@ -394,8 +702,10 @@
       body: JSON.stringify({
         sessionId: state.presenceRuntime.sessionId,
         roomId: state.presence.roomId,
+        eventAlias: state.runtime.eventAlias,
+        eventName: state.runtime.eventName,
         eventType: eventType,
-        sourceApp: "hub-sport-lsk-ultralight",
+        sourceApp: "hub-sport-ultralight",
         processType: "hub-presence",
         now: Date.now()
       })
@@ -406,7 +716,10 @@
 
   function buildPresenceUrl(eventType) {
     const base = String(state.presence.endpointBase || "").replace(/\/+$/, "");
-    return base + "/presence/" + eventType + "?roomId=" + encodeURIComponent(state.presence.roomId || "hub-sport-lsk-global");
+    return base
+      + "/presence/" + eventType
+      + "?roomId=" + encodeURIComponent(state.presence.roomId || "hub-sport-global")
+      + "&event=" + encodeURIComponent(state.runtime.eventAlias || "ipv");
   }
 
   function presenceLeaveBestEffort(reason) {
@@ -414,8 +727,10 @@
     const payload = JSON.stringify({
       sessionId: state.presenceRuntime.sessionId,
       roomId: state.presence.roomId,
+      eventAlias: state.runtime.eventAlias,
+      eventName: state.runtime.eventName,
       eventType: "leave",
-      sourceApp: "hub-sport-lsk-ultralight",
+      sourceApp: "hub-sport-ultralight",
       processType: "hub-presence",
       reason: String(reason || "leave"),
       now: Date.now()
@@ -432,8 +747,11 @@
   }
 
   function renderAll() {
+    applyEventBranding();
+    applyHeroConfigVisibility();
     updateOpacityValue();
     renderModeSwitch();
+    renderEventsCombo();
     renderSourceSelector();
     renderAuthPanel();
     renderSummary();
@@ -441,6 +759,14 @@
     renderInscribedRail();
     renderSectionA();
     renderSectionB();
+  }
+
+  function applyHeroConfigVisibility() {
+    const isBaseEvent = String(state.runtime.eventAlias || "").trim().toLowerCase() === "ipv";
+    const blocks = document.querySelectorAll(".hero-config-block");
+    blocks.forEach(function (block) {
+      block.style.display = isBaseEvent ? "" : "none";
+    });
   }
 
   function renderSourceSelector() {
@@ -452,10 +778,11 @@
 
     el.sourceEmailSelect.innerHTML = options.join("");
     el.sourceEmailSelect.value = state.activeSourceEmail;
+    el.sourceEmailSelect.disabled = resolveViewMode(state.viewMode) === "demo";
 
     const sourceProfile = getActiveSourceProfile();
     el.sourceEmailValue.textContent = sourceProfile ? sourceProfile.email : "Catalogo general";
-    if (state.viewMode === "demo") {
+    if (resolveViewMode(state.viewMode) === "demo") {
       el.sourceModeValue.textContent = "Demo curado";
     } else {
       el.sourceModeValue.textContent = sourceProfile ? "Categorias del correo origen" : "Rotacion completa";
@@ -464,15 +791,15 @@
 
   function renderModeSwitch() {
     if (!el.viewModePreBtn || !el.viewModeDemoBtn) return;
-    el.viewModePreBtn.classList.toggle("is-active", state.viewMode === "pre");
+    el.viewModePreBtn.classList.toggle("is-active", resolveViewMode(state.viewMode) === "real");
     el.viewModeDemoBtn.classList.toggle("is-active", state.viewMode === "demo");
   }
 
   async function setViewMode(mode) {
-    const next = mode === "demo" ? "demo" : "pre";
+    const next = mode === "demo" ? "demo" : "real";
     if (state.viewMode === next) return;
     state.viewMode = next;
-    window.localStorage.setItem("hubSportLskViewMode", next);
+    window.localStorage.setItem("viewMode", next);
     state.activeCategoryIndex = 0;
     state.activeDeckOffset = 0;
     state.activeSectionBIndex = 0;
@@ -481,6 +808,26 @@
     await loadShowcaseSources();
     state.activeSourceEmail = getInitialSourceEmail();
     renderAll();
+  }
+
+  function renderEventsCombo() {
+    if (!el.eventSelect) return;
+    const resolvedAlias = String(state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    const rows = (state.runtime.eventsCatalog || []).filter(function (item) {
+      return String(item && item.event_alias || "").trim();
+    });
+    const normalizedRows = rows.length ? rows : [{
+      event_alias: resolvedAlias,
+      event_name: state.runtime.eventName || resolvedAlias.toUpperCase(),
+      event_active: state.runtime.eventActive
+    }];
+    el.eventSelect.innerHTML = normalizedRows.map(function (item) {
+      const alias = String(item.event_alias || "").trim().toLowerCase();
+      const name = String(item.event_name || alias.toUpperCase()).trim();
+      const active = Number(item.event_active == null ? 1 : item.event_active) ? "" : " (inactivo)";
+      return "<option value='" + esc(alias) + "'>" + esc(name + " [" + alias.toUpperCase() + "]" + active) + "</option>";
+    }).join("");
+    el.eventSelect.value = resolvedAlias;
   }
 
   function renderAuthPanel() {
@@ -508,19 +855,212 @@
   function renderSummary() {
     const preCount = state.showcaseEntries.filter(function (entry) { return entry.status === "Pre-inscrito"; }).length;
     const inscribedCount = state.showcaseEntries.filter(function (entry) { return entry.status === "Inscrito"; }).length;
-    const categories = unique(state.showcaseEntries.map(function (entry) { return entry.categoryDisplay; }));
+    const categories = buildCategorySummaryMatrix();
 
     el.preCount.textContent = String(preCount);
     el.inscribedCount.textContent = String(inscribedCount);
-    el.categoryCount.textContent = String(categories.length);
+    el.categoryCount.textContent = String(categories.length || CATEGORY_ORDER.length);
+  }
+
+  function initSummaryHover() {
+    bindSummaryHoverTarget(el.catLabel, "cat");
+    bindSummaryHoverTarget(el.categoryCount, "cat");
+    bindSummaryHoverTarget(el.preLabel, "pre");
+    bindSummaryHoverTarget(el.preCount, "pre");
+    bindSummaryHoverTarget(el.insLabel, "ins");
+    bindSummaryHoverTarget(el.inscribedCount, "ins");
+  }
+
+  function bindSummaryHoverTarget(target, type) {
+    if (!target) return;
+    target.setAttribute("tabindex", "0");
+    target.addEventListener("mouseenter", function () {
+      showSummaryHover(type, target);
+    });
+    target.addEventListener("mouseleave", scheduleHideSummaryHover);
+    target.addEventListener("focus", function () {
+      showSummaryHover(type, target);
+    });
+    target.addEventListener("blur", scheduleHideSummaryHover);
+  }
+
+  function showSummaryHover(type, anchor) {
+    const dialog = ensureSummaryHoverNode();
+    clearSummaryHoverTimer();
+    state.summaryHover.activeType = String(type || "");
+    dialog.innerHTML = renderSummaryHoverDialog(state.summaryHover.activeType);
+    dialog.classList.remove("hidden");
+    positionSummaryHover(dialog, anchor);
+  }
+
+  function scheduleHideSummaryHover() {
+    clearSummaryHoverTimer();
+    state.summaryHover.hideTimer = window.setTimeout(function () {
+      hideSummaryHover();
+    }, 120);
+  }
+
+  function clearSummaryHoverTimer() {
+    if (state.summaryHover.hideTimer) {
+      window.clearTimeout(state.summaryHover.hideTimer);
+      state.summaryHover.hideTimer = null;
+    }
+  }
+
+  function hideSummaryHover() {
+    if (!state.summaryHover.node) return;
+    state.summaryHover.node.classList.add("hidden");
+    state.summaryHover.activeType = "";
+  }
+
+  function ensureSummaryHoverNode() {
+    if (state.summaryHover.node) return state.summaryHover.node;
+    const node = document.createElement("div");
+    node.id = "summaryHoverDialog";
+    node.className = "summary-hover-dialog hidden";
+    node.setAttribute("role", "dialog");
+    node.setAttribute("aria-live", "polite");
+    node.addEventListener("mouseenter", clearSummaryHoverTimer);
+    node.addEventListener("mouseleave", scheduleHideSummaryHover);
+    document.body.appendChild(node);
+    state.summaryHover.node = node;
+    return node;
+  }
+
+  function positionSummaryHover(node, anchor) {
+    if (!node || !anchor) return;
+    const rect = anchor.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+    const margin = 12;
+    let left = rect.right + margin;
+    let top = rect.top - 4;
+    if (left + nodeRect.width > window.innerWidth - margin) {
+      left = Math.max(margin, rect.left - nodeRect.width - margin);
+    }
+    if (top + nodeRect.height > window.innerHeight - margin) {
+      top = Math.max(margin, window.innerHeight - nodeRect.height - margin);
+    }
+    node.style.left = String(Math.round(left)) + "px";
+    node.style.top = String(Math.round(top)) + "px";
+  }
+
+  function renderSummaryHoverDialog(type) {
+    const rows = buildCategorySummaryMatrix();
+    let filtered = rows.slice();
+    let title = "Categorias";
+    let columns = [
+      { key: "ins", label: "Inscritos" },
+      { key: "pre", label: "Pre-inscritos" },
+      { key: "categoryDisplay", label: "Categoría" }
+    ];
+    if (type === "pre") {
+      title = "Pre-inscritos por categoria";
+      filtered = rows.filter(function (item) { return item.pre > 0; });
+      columns = [
+        { key: "pre", label: "Pre-inscritos" },
+        { key: "categoryDisplay", label: "Categoría" }
+      ];
+    } else if (type === "ins") {
+      title = "Inscritos por categoria";
+      filtered = rows.filter(function (item) { return item.ins > 0; });
+      columns = [
+        { key: "ins", label: "Inscritos" },
+        { key: "categoryDisplay", label: "Categoría" }
+      ];
+    } else {
+      title = "Categorias del evento";
+    }
+    if (!filtered.length) {
+      return "<div class='summary-hover-head'><strong>" + esc(title) + "</strong></div><div class='summary-hover-empty'>Sin incidencias.</div>";
+    }
+    const header = columns.map(function (col) {
+      return "<th>" + esc(col.label) + "</th>";
+    }).join("");
+    const tableRows = filtered.map(function (item) {
+      const cells = columns.map(function (col) {
+        return renderSummaryCell(item[col.key], col.key);
+      }).join("");
+      return "<tr>" + cells + "</tr>";
+    }).join("");
+    const totals = buildSummaryTotals(filtered, columns);
+    const totalCells = columns.map(function (col) {
+      if (col.key === "categoryDisplay") return "<td class='summary-total-label'>TOTAL</td>";
+      return renderSummaryCell(totals[col.key], col.key);
+    }).join("");
+    return ""
+      + "<div class='summary-hover-head'><strong>" + esc(title) + "</strong></div>"
+      + "<table class='summary-hover-table'>"
+      + "<thead><tr>" + header + "</tr></thead>"
+      + "<tbody>" + tableRows + "<tr class='summary-hover-total-row'>" + totalCells + "</tr></tbody>"
+      + "</table>";
+  }
+
+  function buildSummaryTotals(rows, columns) {
+    const list = Array.isArray(rows) ? rows : [];
+    const totals = {};
+    (Array.isArray(columns) ? columns : []).forEach(function (col) {
+      if (!col || !col.key) return;
+      if (col.key === "ins" || col.key === "pre") {
+        totals[col.key] = list.reduce(function (acc, item) {
+          return acc + (Number(item && item[col.key]) || 0);
+        }, 0);
+      } else {
+        totals[col.key] = "";
+      }
+    });
+    return totals;
+  }
+
+  function renderSummaryCell(value, key) {
+    const isNumeric = key === "ins" || key === "pre";
+    if (!isNumeric) return "<td>" + esc(value) + "</td>";
+    const number = Number(value) || 0;
+    const cls = number > 0 ? "summary-cell-positive" : "summary-cell-zero";
+    return "<td class='" + cls + "'>" + esc(number) + "</td>";
+  }
+
+  function buildCategorySummaryMatrix() {
+    const categories = CATEGORY_ORDER.slice();
+    const dynamicCategories = unique(state.showcaseEntries.map(function (entry) {
+      return String(entry && entry.categoryDisplay || "").trim();
+    }).filter(Boolean));
+    dynamicCategories.forEach(function (category) {
+      if (!categories.includes(category)) categories.push(category);
+    });
+    const matrix = {};
+    categories.forEach(function (category) {
+      matrix[category] = { categoryDisplay: category, ins: 0, pre: 0 };
+    });
+    const seenPre = new Set();
+    const seenIns = new Set();
+    state.showcaseEntries.forEach(function (entry) {
+      const category = String(entry && entry.categoryDisplay || "").trim();
+      if (!category) return;
+      if (!matrix[category]) matrix[category] = { categoryDisplay: category, ins: 0, pre: 0 };
+      const teamKey = normalizeKey(entry && entry.teamName || entry && entry.id || "equipo");
+      const status = String(entry && entry.status || "").toLowerCase();
+      const signature = category + "|" + teamKey;
+      if (status === "inscrito") {
+        if (seenIns.has(signature)) return;
+        seenIns.add(signature);
+        matrix[category].ins += 1;
+        return;
+      }
+      if (seenPre.has(signature)) return;
+      seenPre.add(signature);
+      matrix[category].pre += 1;
+    });
+    return categories.map(function (category) {
+      return matrix[category];
+    });
   }
 
   function renderSponsorsCarousel() {
     const urls = state.sponsorLogoUrls.length
       ? state.sponsorLogoUrls
       : [
-          "../assets/logo-ipv-oficial.png",
-          "../assets/logo-ipv-oficial.png"
+          "assets/logo-ipv-oficial.png",
+          "assets/logo-ipv-oficial.png"
         ];
 
     el.sponsorsCarousel.innerHTML = renderCarousel(urls, "sponsor-logo", "Patrocinador");
@@ -534,14 +1074,14 @@
     });
 
     if (!entries.length) {
-      el.inscribedLogosRail.innerHTML = "<div class='empty-state'>Todavia no hay logos inscritos para mostrar.</div>";
+      el.inscribedLogosRail.innerHTML = "<div class='empty-state'>Todavía no hay equipos pre-inscritos/inscritos para mostrar.</div>";
       return;
     }
 
     const urls = entries.slice(0, 8).map(function (entry) {
       return entry.logoUrl || IPV_LOGO;
     });
-    el.inscribedLogosRail.innerHTML = renderCarousel(urls, "team-logo-item", "Logo inscrito");
+    el.inscribedLogosRail.innerHTML = renderCarousel(urls, "team-logo-item", "Equipo inscrito");
   }
 
   function renderSectionA() {
@@ -567,7 +1107,7 @@
     if (el.sectionAEyebrow) {
       el.sectionAEyebrow.textContent = uniqueTeamsCount === 1 ? "Mi categoría" : "Mis categorías";
     }
-    el.activeCategoryMeta.textContent = uniqueTeamsCount === 1 ? "1 categoría activa" : formatCategoryCountLabel(categories.length);
+    el.activeCategoryMeta.textContent = formatActiveTeamsAndCategoriesLabel(uniqueTeamsCount, categories.length);
     if (el.sectionANav) {
       el.sectionANav.classList.remove("hidden");
       const canNavigate = categories.length > 1;
@@ -577,7 +1117,7 @@
     }
 
     if (!displayEntries.length) {
-      el.sectionADeck.innerHTML = "<div class='empty-state'>No hay logos disponibles para la categoria activa.</div>";
+      el.sectionADeck.innerHTML = "<div class='empty-state'>No hay equipos disponibles para la categoría actual.</div>";
       return;
     }
 
@@ -610,6 +1150,14 @@
     return total + " categorías activas";
   }
 
+  function formatActiveTeamsAndCategoriesLabel(teamCount, categoryCount) {
+    const teams = Number(teamCount) || 0;
+    const categories = Number(categoryCount) || 0;
+    const teamsLabel = teams === 1 ? "1 equipo" : teams + " equipos";
+    const categoriesLabel = categories === 1 ? "1 categoría activa" : categories + " categorías activas";
+    return teamsLabel + " / " + categoriesLabel;
+  }
+
   function countUniqueTeams(entries) {
     return collectUniqueTeams(entries).size;
   }
@@ -633,7 +1181,7 @@
     if (missingSig !== state.lastMissingLiveSignature) {
       state.lastMissingLiveSignature = missingSig;
       if (missingLive.length) {
-        console.info("[HubSportLSK] categorias sin logos en fuente activa (cubiertas por fallback curado):", missingLive);
+        console.info("[HubSport] categorias sin logos en fuente activa (cubiertas por fallback curado):", missingLive);
       }
     }
 
@@ -650,7 +1198,7 @@
       if (el.sectionBNextBtn) el.sectionBNextBtn.disabled = !canNavigate;
     }
     if (!categories.length) {
-      console.warn("[HubSportLSK] Seccion B sin logos. Revisar categorias:", CATEGORY_ORDER.slice());
+      console.warn("[HubSport] Seccion B sin logos. Revisar categorias:", CATEGORY_ORDER.slice());
       el.sectionBTitle.textContent = "Categorías disponibles del evento";
       el.sectionBCategoryName.textContent = "Catálogo completo";
       el.sectionBCategoryMeta.textContent = "Categorías disponibles";
@@ -680,25 +1228,125 @@
     el.sectionBDeck.innerHTML = renderCardCarousel(entries, {
       forceMarquee: true,
       minItems: 8,
-      trackClass: "section-marquee-track"
+      trackClass: "section-marquee-track",
+      statusBadgeResolver: shouldRenderSectionBStatusBadge
     });
   }
 
+  function shouldRenderSectionBStatusBadge(entry) {
+    if (resolveViewMode(state.viewMode) !== "real") {
+      return resolveDemoBadgeState(entry);
+    }
+    const mode = String(state.runtime.dataMode || "");
+    const hasRealSheetsData = mode === "apps-script-bootstrap-real" || mode === "apps-script-bootstrap-ipv";
+    if (!hasRealSheetsData) return { showBadge: false };
+    return hasRealStatusBacking(entry)
+      ? { showBadge: true, statusText: entry.status || "Pre-inscrito", isInscribed: entry.status === "Inscrito" }
+      : { showBadge: false };
+  }
+
+  function hasRealStatusBacking(entry) {
+    const existsInTeams = existsEntryInSource(entry, "teams");
+    const existsInInscritos = existsEntryInSource(entry, "preRegistered");
+    return existsInTeams || existsInInscritos;
+  }
+
+  function existsEntryInSource(entry, sourceName) {
+    const source = String(sourceName || "").trim();
+    if (!source) return false;
+    const targetSignature = buildEntrySignature(entry);
+    return state.showcaseEntries.some(function (item) {
+      if (String(item && item.source || "") !== source) return false;
+      return buildEntrySignature(item) === targetSignature;
+    });
+  }
+
+  function buildEntrySignature(entry) {
+    const team = normalizeKey(entry && entry.teamName || "");
+    const category = normalizeKey(entry && entry.categoryDisplay || "");
+    const logo = normalizeAssetPath(entry && entry.logoUrl || "");
+    return [team, category, logo].join("|");
+  }
+
+  function resolveDemoBadgeState(entry) {
+    const map = getDemoBadgeStateMap();
+    const key = buildDemoBadgeKey(entry);
+    if (!map[key]) {
+      map[key] = pickDemoBadgeState();
+      persistDemoBadgeStateMap(map);
+    }
+    const stateValue = String(map[key] || "pre");
+    if (stateValue === "none") {
+      return { showBadge: false, statusText: "", isInscribed: entry && entry.status === "Inscrito" };
+    }
+    if (stateValue === "ins") {
+      return { showBadge: true, statusText: "Inscrito", isInscribed: true };
+    }
+    return { showBadge: true, statusText: "Pre-inscrito", isInscribed: false };
+  }
+
+  function getDemoBadgeStateMap() {
+    if (state.runtime.demoBadgeMap && typeof state.runtime.demoBadgeMap === "object") {
+      return state.runtime.demoBadgeMap;
+    }
+    try {
+      const raw = window.sessionStorage.getItem(DEMO_BADGE_SESSION_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      state.runtime.demoBadgeMap = parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      state.runtime.demoBadgeMap = {};
+    }
+    return state.runtime.demoBadgeMap;
+  }
+
+  function persistDemoBadgeStateMap(map) {
+    try {
+      window.sessionStorage.setItem(DEMO_BADGE_SESSION_KEY, JSON.stringify(map || {}));
+    } catch (_) {
+    }
+  }
+
+  function buildDemoBadgeKey(entry) {
+    const id = String(entry && entry.id || "").trim();
+    if (id) return id;
+    return [
+      String(state.runtime.eventAlias || "ipv").trim().toLowerCase(),
+      normalizeKey(entry && entry.teamName || ""),
+      normalizeKey(entry && entry.categoryDisplay || ""),
+      normalizeAssetPath(entry && entry.logoUrl || "")
+    ].join("|");
+  }
+
+  function pickDemoBadgeState() {
+    const states = ["pre", "pre", "pre", "ins", "ins", "none"];
+    const randomIndex = Math.floor(Math.random() * states.length);
+    return states[randomIndex] || "pre";
+  }
+
   function startRotation() {
-    window.setInterval(function () {
-      if (document.hidden) return;
-      let changedSectionA = false;
-      let changedSectionB = false;
+    startSectionARotation();
+    startSectionBRotation();
+  }
+
+  function startSectionARotation() {
+    if (state.rotation.sectionATimer) window.clearInterval(state.rotation.sectionATimer);
+    state.rotation.sectionATimer = window.setInterval(function () {
+      if (document.hidden || state.rotation.pausedA) return;
       if (state.activeCategories.length > 1) {
         state.activeCategoryIndex = (state.activeCategoryIndex + 1) % state.activeCategories.length;
-        changedSectionA = true;
+        renderSectionA();
       }
+    }, 24000);
+  }
+
+  function startSectionBRotation() {
+    if (state.rotation.sectionBTimer) window.clearInterval(state.rotation.sectionBTimer);
+    state.rotation.sectionBTimer = window.setInterval(function () {
+      if (document.hidden || state.rotation.pausedB) return;
       if (state.secondaryCategories.length > 1) {
         state.activeSectionBIndex = (state.activeSectionBIndex + 1) % state.secondaryCategories.length;
-        changedSectionB = true;
+        renderSectionB();
       }
-      if (changedSectionA) renderSectionA();
-      if (changedSectionB) renderSectionB();
     }, 24000);
   }
 
@@ -812,7 +1460,7 @@
     shuffledCategories.forEach(function (category, idx) {
       const mapping = toDemoRawCategory(category);
       const baseName = "Demo " + String(idx + 1).padStart(2, "0");
-      const email = "demo" + String(idx + 1).padStart(2, "0") + "@hub-lsk.local";
+      const email = "demo" + String(idx + 1).padStart(2, "0") + "@hub-sport.local";
       const logoA = safeLogos[idx % safeLogos.length];
       demoPre.push({
         email: email,
@@ -830,7 +1478,7 @@
           name: baseName + " " + category,
           branch: mapping.branch,
           category: mapping.categoryRaw,
-          ownerEmail: "inscrito" + idx + "@hub-lsk.local"
+          ownerEmail: "inscrito" + idx + "@hub-sport.local"
         });
       }
     });
@@ -838,6 +1486,356 @@
       preRegisteredRows: demoPre,
       teamRows: demoTeams
     };
+  }
+
+  async function resolveDemoDataset() {
+    if (String(state.runtime.eventAlias || "").trim().toLowerCase() === "ipv") {
+      return buildDemoShowcaseSources();
+    }
+    if (String(state.runtime.urlParams && state.runtime.urlParams.demoMode || "").trim().toLowerCase() === "premium") {
+      return await buildPremiumDemoDataset();
+    }
+    return await buildGlobalDemoShowcaseSources();
+  }
+
+  async function buildPremiumDemoDataset() {
+    const alias = String(state.runtime.eventAlias || "demo").trim().toLowerCase();
+    const universe = await buildPremiumDemoUniverse(alias);
+    return {
+      preRegisteredRows: universe.preRegisteredRows,
+      teamRows: universe.teamRows
+    };
+  }
+
+  async function buildPremiumDemoUniverse(alias) {
+    const categories = CATEGORY_ORDER.slice();
+    const logoPool = await getPremiumDemoLogoPool(alias);
+    const teams = buildPremiumDemoTeams(logoPool, alias);
+    const assignments = assignPremiumTeamsToCategories(teams, categories);
+    return {
+      preRegisteredRows: curatePremiumSectionA(assignments.teams, alias),
+      teamRows: curatePremiumSectionB(assignments.teams, alias)
+    };
+  }
+
+  async function getPremiumDemoLogoPool(alias) {
+    const folderId = normalizeFolderId(String((config.settings && config.settings.teamLogosFolderId) || ""));
+    let images = [];
+    if (folderId) {
+      try {
+        images = await getImages(folderId);
+      } catch (_) {
+        images = [];
+      }
+    }
+    const normalized = uniqueBy(
+      (images || []).map(normalizeImage).filter(function (item) { return item && item.url; }),
+      function (item) { return safeImageUrl(item.url) || String(item.url || "").trim(); }
+    );
+    const derived = normalized.map(function (item, idx) {
+      const label = guessTeamName(item.name || ("Equipo " + (idx + 1)));
+      return {
+        id: "logo-" + idx,
+        name: label,
+        logoUrl: safeImageUrl(item.url) || IPV_LOGO
+      };
+    });
+    if (derived.length) return derived;
+    const fallbackBase = buildDemoShowcaseSources();
+    const fallbackLogos = unique(
+      (fallbackBase.preRegisteredRows || [])
+        .map(function (row) { return splitMultiValue(row.logos || ""); })
+        .reduce(function (acc, list) { return acc.concat(list); }, [])
+        .map(toDriveThumbnail)
+        .filter(Boolean)
+    );
+    return fallbackLogos.map(function (url, idx) {
+      return {
+        id: "fallback-logo-" + idx,
+        name: "Equipo " + String(idx + 1).padStart(2, "0"),
+        logoUrl: url
+      };
+    });
+  }
+
+  function buildPremiumDemoTeams(logoPool, alias) {
+    const MAX_CATEGORIES_PER_TEAM = 2;
+    const categoriesCount = CATEGORY_ORDER.length || 13;
+    const minTeams = Math.max(52, categoriesCount * 6);
+    const base = (Array.isArray(logoPool) ? logoPool : []).slice();
+    const teams = [];
+    let index = 0;
+
+    while (index < base.length) {
+      const item = base[index];
+      teams.push({
+        id: "t-" + index,
+        name: makeUniqueTeamName(item.name || ("Equipo " + (index + 1)), index),
+        logoUrl: item.logoUrl || IPV_LOGO,
+        status: "pre",
+        categories: [],
+        maxCategories: MAX_CATEGORIES_PER_TEAM
+      });
+      index += 1;
+    }
+
+    // Fallback premium si el pool real no alcanza densidad creíble.
+    while (teams.length < minTeams) {
+      const idx = teams.length;
+      teams.push({
+        id: "t-fallback-" + idx,
+        name: makeUniqueTeamName("Escuadra " + (idx + 1), idx),
+        logoUrl: buildDemoPlaceholderLogo(alias, "Escuadra " + (idx + 1), idx),
+        status: "pre",
+        categories: [],
+        maxCategories: MAX_CATEGORIES_PER_TEAM
+      });
+    }
+
+    const shuffled = shuffle(teams.slice());
+    const insTarget = Math.round(shuffled.length * 0.6);
+    shuffled.forEach(function (team, idx) {
+      team.status = idx < insTarget ? "ins" : "pre";
+    });
+    return shuffled;
+  }
+
+  function assignPremiumTeamsToCategories(teams, categories) {
+    const categoryList = Array.isArray(categories) ? categories.slice() : [];
+    const workingTeams = Array.isArray(teams) ? teams.slice() : [];
+    const perCategoryTarget = Math.max(6, Math.min(10, Math.floor((workingTeams.length * 1.18) / Math.max(1, categoryList.length))));
+    const buckets = {};
+    categoryList.forEach(function (category) { buckets[category] = []; });
+
+    function pickLeastLoadedCategory(exclude) {
+      const blocked = new Set(Array.isArray(exclude) ? exclude : []);
+      return categoryList
+        .filter(function (category) { return !blocked.has(category); })
+        .sort(function (a, b) { return buckets[a].length - buckets[b].length; })[0] || categoryList[0];
+    }
+
+    // Asignación primaria (todos tienen al menos una categoría).
+    workingTeams.forEach(function (team) {
+      const cat = pickLeastLoadedCategory([]);
+      team.categories = [cat];
+      buckets[cat].push(team.id);
+    });
+
+    // Minoría con segunda categoría (realismo).
+    const secondaryCount = Math.floor(workingTeams.length * 0.22);
+    const candidates = shuffle(workingTeams.slice()).slice(0, secondaryCount);
+    candidates.forEach(function (team) {
+      if (team.categories.length >= team.maxCategories) return;
+      const second = pickLeastLoadedCategory(team.categories);
+      if (!second || team.categories.includes(second)) return;
+      team.categories.push(second);
+      buckets[second].push(team.id);
+    });
+
+    // Refuerzo de categorías subpobladas.
+    categoryList.forEach(function (category) {
+      while (buckets[category].length < perCategoryTarget) {
+        const donor = workingTeams.find(function (team) {
+          return team.categories.length < team.maxCategories && !team.categories.includes(category);
+        });
+        if (!donor) break;
+        donor.categories.push(category);
+        buckets[category].push(donor.id);
+      }
+    });
+
+    // Orden visual curado para evitar repetición inmediata por categoría.
+    categoryList.forEach(function (category) {
+      const ids = buckets[category].slice();
+      const teamById = {};
+      workingTeams.forEach(function (team) { teamById[team.id] = team; });
+      const ordered = [];
+      let lastLogo = "";
+      ids.forEach(function (id) {
+        const sameLogoIndex = ids.findIndex(function (candidateId) {
+          const team = teamById[candidateId];
+          return team && team.logoUrl !== lastLogo && !ordered.includes(candidateId);
+        });
+        const chosenId = sameLogoIndex >= 0 ? ids[sameLogoIndex] : id;
+        const chosen = teamById[chosenId];
+        if (chosen) {
+          ordered.push(chosenId);
+          lastLogo = chosen.logoUrl || "";
+        }
+      });
+      buckets[category] = unique(ordered);
+    });
+
+    return {
+      teams: workingTeams,
+      categories: buckets
+    };
+  }
+
+  function curatePremiumSectionA(teams, alias) {
+    const normalizedTeams = Array.isArray(teams) ? teams : [];
+    return normalizedTeams.map(function (team, idx) {
+      const mapped = (team.categories || []).map(function (category) { return toDemoRawCategory(category); });
+      const branches = unique(mapped.map(function (item) { return item.branch; }));
+      const categoriesRaw = unique(mapped.map(function (item) { return item.categoryRaw; }));
+      return {
+        email: "demo" + String(idx + 1).padStart(3, "0") + "@" + alias + ".hub-sport.local",
+        branches: branches.join(", "),
+        categories: categoriesRaw.join(", "),
+        logos: team.logoUrl || IPV_LOGO,
+        firstName: "Equipo",
+        lastName: String(alias || "demo").toUpperCase(),
+        phone: "",
+        teamName: team.name
+      };
+    });
+  }
+
+  function curatePremiumSectionB(teams, alias) {
+    const normalizedTeams = Array.isArray(teams) ? teams : [];
+    const rows = [];
+    normalizedTeams.forEach(function (team, idx) {
+      if (team.status !== "ins") return;
+      (team.categories || []).forEach(function (category, catIdx) {
+        const mapped = toDemoRawCategory(category);
+        rows.push({
+          id: alias + "-premium-team-" + idx + "-" + catIdx,
+          name: team.name,
+          branch: mapped.branch,
+          category: mapped.categoryRaw,
+          ownerEmail: "inscrito" + idx + "@" + alias + ".hub-sport.local"
+        });
+      });
+    });
+    return rows;
+  }
+
+  function makeUniqueTeamName(baseName, index) {
+    const safeBase = String(baseName || "Equipo")
+      .replace(/\s+/g, " ")
+      .trim() || "Equipo";
+    return safeBase + " " + String(index + 1).padStart(2, "0");
+  }
+
+  async function buildGlobalDemoShowcaseSources() {
+    const alias = String(state.runtime.eventAlias || "demo").trim().toLowerCase();
+    const aliasLabel = alias.toUpperCase();
+    const folderId = normalizeFolderId(String((config.settings && config.settings.teamLogosFolderId) || ""));
+    let images = [];
+    if (folderId) {
+      try {
+        images = await getImages(folderId);
+      } catch (_) {
+        images = [];
+      }
+    }
+
+    const fallbackBase = buildDemoShowcaseSources();
+    const fallbackLogos = unique(
+      (fallbackBase.preRegisteredRows || [])
+        .map(function (row) { return splitMultiValue(row.logos || ""); })
+        .reduce(function (acc, list) { return acc.concat(list); }, [])
+        .map(toDriveThumbnail)
+        .filter(Boolean)
+    );
+
+    const logoEntries = uniqueBy(
+      (images || []).map(normalizeImage).filter(function (item) { return item && item.url; }),
+      function (item) { return safeImageUrl(item.url) || String(item.url || "").trim(); }
+    );
+
+    const categoryLogoPool = {};
+    CATEGORY_ORDER.forEach(function (category) { categoryLogoPool[category] = []; });
+    logoEntries.forEach(function (item, index) {
+      const category = classifyLogoCategory(item.name || "", index);
+      const url = safeImageUrl(item.url) || "";
+      if (url && categoryLogoPool[category]) categoryLogoPool[category].push(url);
+    });
+
+    const allCatalogLogos = unique(
+      logoEntries.map(function (item) { return safeImageUrl(item.url) || ""; }).filter(Boolean)
+    );
+    const allLogos = unique(allCatalogLogos.concat(fallbackLogos).filter(Boolean));
+    const safeLogos = allLogos.length ? allLogos : [IPV_LOGO];
+
+    const categories = shuffle(CATEGORY_ORDER.slice());
+    const demoPre = [];
+    const demoTeams = [];
+    let lastLogoUsed = "";
+    const logoUsage = {};
+    const maxUsagePerLogo = Math.max(2, Math.ceil(categories.length / Math.max(1, safeLogos.length)));
+
+    categories.forEach(function (category, idx) {
+      const mapping = toDemoRawCategory(category);
+      const teamName = aliasLabel + " Demo " + String(idx + 1).padStart(2, "0") + " " + category;
+      const email = "demo" + String(idx + 1).padStart(2, "0") + "@" + alias + ".hub-sport.local";
+      const preferredPool = categoryLogoPool[category] && categoryLogoPool[category].length
+        ? shuffle(categoryLogoPool[category].slice())
+        : shuffle(safeLogos.slice());
+      let logoUrl = preferredPool[idx % preferredPool.length] || safeLogos[idx % safeLogos.length] || IPV_LOGO;
+      const curated = preferredPool.concat(safeLogos).find(function (url) {
+        const normalized = String(url || "");
+        return normalized
+          && normalized !== lastLogoUsed
+          && (logoUsage[normalized] || 0) < maxUsagePerLogo;
+      });
+      if (curated) logoUrl = curated;
+      if (logoUrl === lastLogoUsed && safeLogos.length > 1) {
+        const alternative = safeLogos.find(function (url) { return url !== lastLogoUsed; });
+        if (alternative) logoUrl = alternative;
+      }
+      lastLogoUsed = logoUrl;
+      logoUsage[logoUrl] = (logoUsage[logoUrl] || 0) + 1;
+
+      demoPre.push({
+        email: email,
+        branches: mapping.branch,
+        categories: mapping.categoryRaw,
+        logos: logoUrl,
+        firstName: "Equipo",
+        lastName: aliasLabel,
+        phone: "",
+        teamName: teamName
+      });
+
+      if (idx % 2 === 0 || idx % 5 === 0) {
+        demoTeams.push({
+          id: alias + "-demo-team-" + idx,
+          name: teamName,
+          branch: mapping.branch,
+          category: mapping.categoryRaw,
+          ownerEmail: "inscrito" + idx + "@" + alias + ".hub-sport.local"
+        });
+      }
+    });
+
+    if (safeLogos.length <= 2 && demoPre.length > 2) {
+      demoPre.forEach(function (row, idx) {
+        row.logos = buildDemoPlaceholderLogo(alias, row.teamName || row.categories, idx);
+      });
+    }
+
+    return {
+      preRegisteredRows: demoPre,
+      teamRows: demoTeams
+    };
+  }
+
+  function buildDemoPlaceholderLogo(alias, label, index) {
+    const palette = ["#1a1426", "#2a1f3f", "#20314f", "#1f3d35", "#4f2e1d", "#2a2f5f"];
+    const accent = ["#fbb400", "#ffd96a", "#f2c97f", "#e8b44d", "#f6d38f"];
+    const bg = palette[index % palette.length];
+    const fg = accent[index % accent.length];
+    const safeAlias = escXml(String(alias || "EV").toUpperCase());
+    const safeLabel = escXml(String(label || "Equipo").slice(0, 22));
+    const svg = ""
+      + "<svg xmlns='http://www.w3.org/2000/svg' width='900' height='680' viewBox='0 0 900 680'>"
+      + "<rect width='900' height='680' fill='" + bg + "'/>"
+      + "<circle cx='740' cy='126' r='170' fill='rgba(255,255,255,0.08)'/>"
+      + "<text x='52' y='112' fill='" + fg + "' font-family='Manrope,Arial' font-size='54' font-weight='700'>" + safeAlias + "</text>"
+      + "<text x='52' y='196' fill='rgba(255,255,255,0.92)' font-family='Rajdhani,Arial' font-size='66' font-weight='700'>" + safeLabel + "</text>"
+      + "</svg>";
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
   }
 
   function toDemoRawCategory(category) {
@@ -961,7 +1959,7 @@
         email: String(payload.email || "").trim().toLowerCase(),
         name: payload.name || payload.email
       };
-      localStorage.setItem(config.sessionStorageKey || "hub-sport-lsk-session", JSON.stringify(state.loggedUser));
+      localStorage.setItem(config.sessionStorageKey || "hub-sport-session", JSON.stringify(state.loggedUser));
       adoptLoggedUserAsSource();
       closeLoginDropdown();
       renderAll();
@@ -970,7 +1968,7 @@
 
   function logout() {
     state.loggedUser = null;
-    localStorage.removeItem(config.sessionStorageKey || "hub-sport-lsk-session");
+    localStorage.removeItem(config.sessionStorageKey || "hub-sport-session");
     state.activeSourceEmail = getInitialSourceEmail();
     hideLoginTooltipImmediate();
     closeLoginDropdown();
@@ -1000,7 +1998,7 @@
           .map(function (item) { return safeImageUrl(item.url); })
           .filter(Boolean);
       } catch (error) {
-        console.warn("[HubSportLSK] no se pudieron cargar logos de patrocinadores", error);
+        console.warn("[HubSport] no se pudieron cargar logos de patrocinadores", error);
       }
     }
 
@@ -1010,7 +2008,7 @@
         const teamImages = await getImages(teamLogosFolderId);
         state.externalLogoEntries = buildExternalLogoEntries(teamImages);
       } catch (error) {
-        console.warn("[HubSportLSK] no se pudo cargar catálogo masivo de logos", error);
+        console.warn("[HubSport] no se pudo cargar catálogo masivo de logos", error);
       }
     }
   }
@@ -1040,7 +2038,7 @@
       return !byCategory[category];
     });
     if (missing.length) {
-      console.info("[HubSportLSK] categorías sin logos clasificados en catálogo masivo:", missing);
+      console.info("[HubSport] categorías sin logos clasificados en catálogo masivo:", missing);
     }
     return entries;
   }
@@ -1090,6 +2088,55 @@
     }
   }
 
+  function applyEventBranding() {
+    const alias = String(state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    const aliasUpper = alias.toUpperCase();
+    document.title = "Hub Sport " + aliasUpper;
+    const heroTitle = document.getElementById("heroEventTitle");
+    if (heroTitle) heroTitle.textContent = "Hub Sport " + aliasUpper;
+    const heroEyebrow = document.getElementById("heroEventEyebrow");
+    if (heroEyebrow) heroEyebrow.textContent = "Temporada 2026 · " + aliasUpper;
+    const loadingLogo = document.getElementById("loadingEventLogo");
+    if (loadingLogo) {
+      const resolved = state.runtime.eventLogo || resolveEventLogo(alias);
+      loadingLogo.onerror = function () {
+        this.onerror = null;
+        this.src = IPV_LOGO;
+      };
+      loadingLogo.src = resolved || IPV_LOGO;
+      loadingLogo.alt = "Logo " + aliasUpper;
+    }
+  }
+
+  function resolveEventLogo(eventAlias) {
+    const alias = String(eventAlias || state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    const map = (config.events && config.events.logosByAlias) || {};
+    const direct = String(map[alias] || "").trim();
+    if (direct) return safeImageUrl(direct) || direct;
+    const conventional = "assets/logo-" + alias + ".png";
+    if (alias && alias !== "ipv") return conventional;
+    const fallback = String((config.events && config.events.fallbackLogo) || IPV_LOGO).trim();
+    return fallback || IPV_LOGO;
+  }
+
+  async function hydrateEventLogo() {
+    const alias = String(state.runtime.eventAlias || "ipv").trim().toLowerCase();
+    const folderId = normalizeFolderId(String((config.events && config.events.logosFolderId) || "").trim());
+    state.runtime.eventLogo = resolveEventLogo(alias);
+    if (!folderId) return;
+    try {
+      const images = await getImages(folderId);
+      const byAlias = images.find(function (item) {
+        const name = normalizeKey(item && item.name || "");
+        return name.indexOf(normalizeKey(alias)) >= 0;
+      });
+      if (byAlias && byAlias.url) {
+        state.runtime.eventLogo = safeImageUrl(byAlias.url) || state.runtime.eventLogo;
+      }
+    } catch (_) {
+    }
+  }
+
   function waitForFonts() {
     if (!document.fonts || !document.fonts.ready) {
       return Promise.resolve();
@@ -1115,6 +2162,255 @@
       slot.textContent = isFilled ? "π" : "";
       slot.classList.toggle("is-filled", isFilled);
     });
+    if (!state.runtime.puzzleMode || state.runtime.puzzleStarted) {
+      updateLoadingStorytelling(percentage);
+    }
+  }
+
+  function updateLoadingStorytelling(percentage) {
+    if (!el.loadingStoryPanel || !el.loadingStoryImage || !el.loadingStoryPuzzle) return;
+    ensureLoadingStoryPuzzleTiles();
+    const phaseIndex = resolveStoryPhaseIndexByProgress(percentage);
+    const phase = STORY_PHASES[phaseIndex] || STORY_PHASES[0];
+    if (!phase) return;
+    const sequence = resolveStoryVisualSequence();
+    const panelFrame = sequence[Math.min(phaseIndex, sequence.length - 1)] || sequence[0];
+    const backgroundIndex = Math.max(0, Math.min(sequence.length - 1, phaseIndex - 1));
+    const backgroundFrame = sequence[backgroundIndex] || panelFrame;
+    const panelText = resolveStoryFrameText(panelFrame, phase);
+    const storySrc = resolveStoryFrameAsset(panelFrame, phase);
+    if (storySrc) {
+      const fallbackVisual = resolveStoryFallbackVisual(phase);
+      el.loadingStoryImage.onerror = function () {
+        this.onerror = null;
+        this.src = fallbackVisual;
+      };
+      const frameSignature = resolveStoryFrameSignature(panelFrame);
+      if (state.loadingStory.lastFrameSignature !== frameSignature) {
+        el.loadingStoryImage.classList.add("is-updating");
+        window.setTimeout(function () {
+          applyLoadingStoryText(panelText);
+          el.loadingStoryImage.src = storySrc;
+          el.loadingStoryImage.classList.remove("is-updating");
+        }, 80);
+      } else if (!el.loadingStoryImage.getAttribute("src")) {
+        applyLoadingStoryText(panelText);
+        el.loadingStoryImage.src = storySrc;
+      } else {
+        applyLoadingStoryText(panelText);
+      }
+      const backgroundSrc = resolveStoryFrameAsset(backgroundFrame, phase) || fallbackVisual;
+      applyLoadingStoryBackground(backgroundSrc);
+      state.loadingStory.currentFrame = panelFrame;
+      state.loadingStory.currentStorySrc = storySrc;
+      state.loadingStory.lastFrameSignature = frameSignature;
+    }
+    const tiles = Array.from(el.loadingStoryPuzzle.querySelectorAll(".loading-story-tile"));
+    const revealCount = Math.max(1, Math.min(tiles.length, Math.ceil((Number(percentage) / 100) * tiles.length)));
+    tiles.forEach(function (tile, index) {
+      tile.classList.toggle("is-revealed", index < revealCount);
+    });
+  }
+
+  function ensureLoadingStoryPuzzleTiles() {
+    if (state.loadingStory.tilesBuilt) return;
+    if (!el.loadingStoryPuzzle) return;
+    const tiles = [];
+    for (let i = 0; i < 9; i += 1) {
+      tiles.push("<span class='loading-story-tile'></span>");
+    }
+    el.loadingStoryPuzzle.innerHTML = tiles.join("");
+    state.loadingStory.tilesBuilt = true;
+  }
+
+  function resolveStoryPhaseIndexByProgress(percentage) {
+    const pct = Math.max(0, Math.min(100, Number(percentage) || 0));
+    return Math.min(STORY_PHASES.length - 1, Math.floor((pct / 100) * (STORY_PHASES.length - 1)));
+  }
+
+  function resolveStoryPhaseByProgress(percentage) {
+    const index = resolveStoryPhaseIndexByProgress(percentage);
+    return STORY_PHASES[index] || STORY_PHASES[0];
+  }
+
+  function resolveStoryVisualSequence() {
+    if (state.runtime.puzzleVariant !== "categoria") {
+      return STORY_PHASES.map(function (phase) {
+        return { type: "phase", key: phase.key };
+      });
+    }
+    return [
+      { type: "category", categoryKey: "iniciacion", branchKey: "mixto" },
+      { type: "category", categoryKey: "infantil", branchKey: "mixto" },
+      { type: "category", categoryKey: "secundaria_femenil", branchKey: "femenil" },
+      { type: "category", categoryKey: "secundaria_varonil", branchKey: "varonil" },
+      { type: "category", categoryKey: "prepa_femenil", branchKey: "femenil" },
+      { type: "category", categoryKey: "prepa_varonil", branchKey: "varonil" },
+      { type: "category", categoryKey: "competitivo", branchKey: "femenil" },
+      { type: "category", categoryKey: "competitivo", branchKey: "varonil" },
+      { type: "category", categoryKey: "alto", branchKey: "mixto" }
+    ];
+  }
+
+  function resolveStoryFrameSignature(frame) {
+    const item = frame || {};
+    if (item.type === "category") return ["category", item.categoryKey || "", item.branchKey || ""].join("|");
+    return ["phase", item.key || ""].join("|");
+  }
+
+  function resolveStoryFrameAsset(frame, phaseRef) {
+    const item = frame || {};
+    if (item.type === "category") {
+      const branchKey = normalizeStoryBranchKey(item.branchKey || resolvePrimaryBranchForStory());
+      const ramaAsset = resolveStoryRamaAsset(branchKey) || STORY_ASSET_MAP.base.portada;
+      return resolveStoryCategoryAsset(item.categoryKey, ramaAsset, branchKey)
+        || resolveStoryFallbackVisual(phaseRef || STORY_PHASES[0]);
+    }
+    return resolveStoryPhaseAsset(item.key || "portada");
+  }
+
+  function resolveStoryFrameText(frame, phaseRef) {
+    const item = frame || {};
+    if (item.type === "category") {
+      const i4Key = normalizeStoryCategoryKey(item.categoryKey);
+      const categoryText = STORY_TEXT_MAP.categoria[i4Key];
+      if (categoryText) return categoryText;
+    }
+    const phaseKey = String(item.key || phaseRef && phaseRef.key || "portada").toLowerCase();
+    const baseText = STORY_TEXT_MAP.base[phaseKey];
+    if (baseText) return baseText;
+    return {
+      title: String(phaseRef && phaseRef.title || "Hub Sport"),
+      caption: String(phaseRef && phaseRef.caption || "Preparando experiencia del evento...")
+    };
+  }
+
+  function applyLoadingStoryText(text) {
+    const safe = text || {};
+    if (el.loadingStoryStage) el.loadingStoryStage.textContent = String(safe.title || "Hub Sport");
+    if (el.loadingStoryCaption) el.loadingStoryCaption.textContent = String(safe.caption || "Preparando experiencia del evento...");
+  }
+
+  function resolveStoryPhaseAsset(phaseKey) {
+    const key = String(phaseKey || "portada").trim().toLowerCase();
+    const fallbackLogo = state.runtime.eventLogo || IPV_LOGO;
+    if (key === "rama") {
+      return resolveStoryRamaAsset(resolvePrimaryBranchForStory()) || fallbackLogo;
+    }
+    if (key === "categoria") {
+      const branchKey = normalizeStoryBranchKey(resolvePrimaryBranchForStory());
+      const ramaAsset = resolveStoryRamaAsset(branchKey) || STORY_ASSET_MAP.base.portada;
+      return resolveStoryCategoryAsset(resolveNormalizedCategoryForStory(), ramaAsset, branchKey) || fallbackLogo;
+    }
+    return STORY_ASSET_MAP.base[key] || fallbackLogo;
+  }
+
+  function resolvePrimaryBranchForStory() {
+    const fromProfiles = state.sourceProfiles
+      .map(function (profile) { return (profile.branches || [])[0]; })
+      .map(normalizeBranchLabel)
+      .find(Boolean);
+    if (fromProfiles) return fromProfiles.toLowerCase();
+    const fromEntries = state.showcaseEntries
+      .map(function (entry) { return inferBranchFromCategory(entry.categoryDisplay || ""); })
+      .find(Boolean);
+    return String(fromEntries || "mixto").toLowerCase();
+  }
+
+  function resolvePrimaryCategoryForStory() {
+    const fromEntries = state.showcaseEntries
+      .map(function (entry) { return String(entry && entry.categoryDisplay || "").trim(); })
+      .find(Boolean);
+    if (fromEntries) return fromEntries;
+    const fromSource = state.sourceProfiles
+      .map(function (profile) { return (profile.displayCategories || [])[0]; })
+      .find(Boolean);
+    return fromSource || CATEGORY_ORDER[0] || "";
+  }
+
+  function resolveNormalizedCategoryForStory() {
+    const raw = String(resolvePrimaryCategoryForStory() || "").toLowerCase();
+    return normalizeStoryCategoryKey(raw) || "i4-1";
+  }
+
+  function normalizeStoryBranchKey(branchKey) {
+    const key = String(branchKey || "").toLowerCase();
+    if (/fem|femenil/.test(key)) return "femenil";
+    if (/var|varonil/.test(key)) return "varonil";
+    if (/mix|mixto|mixed/.test(key)) return "mixto";
+    return "mixto";
+  }
+
+  function resolveStoryRamaAsset(branchKey) {
+    const key = normalizeStoryBranchKey(branchKey);
+    if (/femenil/.test(key)) return STORY_ASSET_MAP.rama.femenil;
+    if (/varonil/.test(key)) return STORY_ASSET_MAP.rama.varonil;
+    return STORY_ASSET_MAP.rama.mixto;
+  }
+
+  function normalizeStoryCategoryKey(categoryKey) {
+    const raw = String(categoryKey || "").toLowerCase().trim();
+    if (!raw) return "";
+    if (/^i4-[1-8]$/.test(raw)) return raw;
+    if (raw === "iniciacion") return "i4-1";
+    if (raw === "infantil") return "i4-2";
+    if (raw === "secundaria_femenil") return "i4-3";
+    if (raw === "secundaria_varonil") return "i4-4";
+    if (raw === "prepa_femenil") return "i4-5";
+    if (raw === "prepa_varonil") return "i4-6";
+    if (/menores|iniciaci|cachi|micro/.test(raw)) return "i4-1";
+    if (/infantil/.test(raw)) return "i4-2";
+    if (/secundaria/.test(raw) && /femenil|fem/.test(raw)) return "i4-3";
+    if (/secundaria/.test(raw) && /varonil|var/.test(raw)) return "i4-4";
+    if (/preparatoria|prepa/.test(raw) && /femenil|fem/.test(raw)) return "i4-5";
+    if (/preparatoria|prepa/.test(raw) && /varonil|var/.test(raw)) return "i4-6";
+    if (/(3a|3ª|3ra|tercera)/.test(raw) && /fuerza|competitivo|libre/.test(raw)) return "i4-7";
+    if (/(1a|1ª|2a|2ª|1ra|2da|primera|segunda)/.test(raw) && /fuerza|competitivo|libre|alto/.test(raw)) return "i4-8";
+    if (/alto|competitivo|libre|fuerza/.test(raw)) return "i4-8";
+    return raw;
+  }
+
+  function resolveStoryCategoryAsset(categoryKey, fallbackAsset, branchKey) {
+    const key = normalizeStoryCategoryKey(categoryKey);
+    const rawKey = String(categoryKey || "").toLowerCase().trim();
+    const branch = normalizeStoryBranchKey(branchKey);
+    const byCategory = STORY_ASSET_MAP.categoria[key] || STORY_ASSET_MAP.categoria[rawKey];
+    if (byCategory && typeof byCategory === "object") {
+      const byBranch = byCategory[branch];
+      if (byBranch) return byBranch;
+      if (byCategory.default) return byCategory.default;
+    }
+    if (typeof byCategory === "string" && byCategory) return byCategory;
+    const ramaFallback = resolveStoryRamaAsset(branch) || fallbackAsset;
+    if (ramaFallback) return ramaFallback;
+    return fallbackAsset || STORY_ASSET_MAP.base.portada || IPV_LOGO;
+  }
+
+  function resolveStoryFallbackVisual(phase) {
+    const candidate = state.runtime.eventLogo || IPV_LOGO;
+    if (candidate && candidate !== IPV_LOGO) return candidate;
+    return buildStoryPlaceholderDataUrl(phase);
+  }
+
+  function buildStoryPlaceholderDataUrl(phase) {
+    const item = phase || STORY_PHASES[0];
+    const alias = String(state.runtime.eventAlias || "ipv").trim().toUpperCase();
+    const title = String(item.title || "Hub Sport");
+    const caption = String(item.caption || "").slice(0, 64);
+    const svg = ""
+      + "<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='900' viewBox='0 0 1600 900'>"
+      + "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>"
+      + "<stop offset='0%' stop-color='#1a1426'/>"
+      + "<stop offset='100%' stop-color='#2b1f3f'/>"
+      + "</linearGradient></defs>"
+      + "<rect width='1600' height='900' fill='url(#g)'/>"
+      + "<circle cx='1320' cy='130' r='260' fill='rgba(251,180,0,0.20)'/>"
+      + "<circle cx='280' cy='760' r='320' fill='rgba(255,255,255,0.08)'/>"
+      + "<text x='84' y='122' fill='#FFE7A2' font-family='Manrope,Arial' font-size='36'>HUB SPORT " + escXml(alias) + "</text>"
+      + "<text x='84' y='188' fill='#FFFFFF' font-family='Rajdhani,Arial' font-size='72' font-weight='700'>" + escXml(title) + "</text>"
+      + "<text x='84' y='238' fill='rgba(245,238,220,0.9)' font-family='Manrope,Arial' font-size='26'>" + escXml(caption) + "</text>"
+      + "</svg>";
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
   }
 
   function waitMs(ms) {
@@ -1123,9 +2419,109 @@
     });
   }
 
+  function hideLoader() {
+    clearPuzzleModeTimer();
+    syncLoadingStoryBackgroundToCurrentFrame();
+    window.requestAnimationFrame(function () {
+      document.body.classList.remove("app-loading");
+    });
+  }
+
+  function applyLoadingStoryBackground(imageUrl) {
+    if (!el.loadingOverlay) return;
+    const safeUrl = safeImageUrl(imageUrl || "");
+    if (!safeUrl) return;
+    el.loadingOverlay.style.backgroundImage =
+      "linear-gradient(180deg, rgba(10, 7, 18, 0.62), rgba(10, 7, 18, 0.86)), " +
+      "radial-gradient(circle at top center, rgba(251, 180, 0, 0.16), transparent 34%), " +
+      "url('" + safeUrl + "')";
+    el.loadingOverlay.style.backgroundSize = "cover";
+    el.loadingOverlay.style.backgroundPosition = "center";
+    el.loadingOverlay.style.backgroundRepeat = "no-repeat";
+  }
+
+  function syncLoadingStoryBackgroundToCurrentFrame() {
+    const currentSrc = safeImageUrl(state.loadingStory.currentStorySrc || "");
+    if (currentSrc) {
+      applyLoadingStoryBackground(currentSrc);
+      return;
+    }
+    const currentFrame = state.loadingStory.currentFrame;
+    if (!currentFrame) return;
+    const phase = STORY_PHASES[Math.max(0, state.runtime.puzzlePhaseIndex)] || STORY_PHASES[STORY_PHASES.length - 1];
+    const resolved = resolveStoryFrameAsset(currentFrame, phase);
+    if (resolved) applyLoadingStoryBackground(resolved);
+  }
+
+  function showPuzzleStartButton() {
+    const loader = document.querySelector("#loader") || el.loadingOverlay || document.querySelector("#loadingOverlay");
+    if (!loader) return;
+    if (loader.querySelector(".puzzle-start-btn")) return;
+    const btn = document.createElement("button");
+    btn.innerText = "Ir";
+    btn.className = "puzzle-start-btn";
+    btn.onclick = function () {
+      startPuzzleModeSequence(180, true);
+    };
+    loader.appendChild(btn);
+  }
+
+  function clearPuzzleModeTimer() {
+    if (state.runtime.puzzleTimer) {
+      window.clearInterval(state.runtime.puzzleTimer);
+      state.runtime.puzzleTimer = null;
+    }
+  }
+
+  function startPuzzleModeSequence(intervalMs, forceFast) {
+    const duration = Number(intervalMs) > 0 ? Number(intervalMs) : 5000;
+    const fast = Boolean(forceFast);
+    clearPuzzleModeTimer();
+    state.runtime.puzzleStarted = true;
+    if (fast) {
+      const btn = document.querySelector(".puzzle-start-btn");
+      if (btn) btn.remove();
+    }
+    const totalPhases = resolveStoryVisualSequence().length || STORY_PHASES.length;
+    let index = fast ? state.runtime.puzzlePhaseIndex : 0;
+    if (index >= totalPhases) index = 0;
+    state.runtime.puzzlePhaseIndex = index;
+
+    function renderPhase(phaseIndex) {
+      const pct = Math.round(((phaseIndex + 1) / totalPhases) * 100);
+      updateLoadingStorytelling(pct);
+      if (el.loadingPercent) el.loadingPercent.textContent = String(pct) + "%";
+      if (el.loadingProgressTrack) {
+        const slots = Array.from(el.loadingProgressTrack.querySelectorAll(".loading-progress-slot"));
+        const filled = Math.round((pct / 100) * LOADING_STEP_COUNT);
+        slots.forEach(function (slot, i) {
+          const isFilled = i < filled;
+          slot.textContent = isFilled ? "π" : "";
+          slot.classList.toggle("is-filled", isFilled);
+        });
+      }
+    }
+
+    renderPhase(index);
+    state.runtime.puzzleTimer = window.setInterval(function () {
+      index += 1;
+      state.runtime.puzzlePhaseIndex = index;
+      if (index >= totalPhases) {
+        clearPuzzleModeTimer();
+        hideLoader();
+        return;
+      }
+      renderPhase(index);
+    }, duration);
+  }
+
+  function startStorytellingSequence() {
+    startPuzzleModeSequence(180, true);
+  }
+
   async function getImages(folderId) {
     if (!folderId) return [];
-    const cacheKey = (config.imageCachePrefix || "hub_sport_lsk_cache_") + folderId;
+    const cacheKey = (config.imageCachePrefix || "hub_sport_cache_") + folderId;
     const ttl = Number(config.imageCacheTtlMs || 300000);
     const cache = readJson(cacheKey, null);
     if (cache && Date.now() - cache.timestamp < ttl) return cache.images || [];
@@ -1163,15 +2559,16 @@
       const minItems = Number(opts.minItems) > 0 ? Number(opts.minItems) : 0;
       const trackClass = String(opts.trackClass || "").trim();
       const singularTravel = Boolean(opts.singularTravel);
+      const statusBadgeResolver = typeof opts.statusBadgeResolver === "function" ? opts.statusBadgeResolver : null;
       if (!entries || !entries.length) {
         return "<div class='empty-state'>Sin elementos para mostrar.</div>";
       }
       if (entries.length === 1 && singularTravel) {
-        const travelItem = renderCardCarouselItem(entries[0]);
+        const travelItem = renderCardCarouselItem(entries[0], statusBadgeResolver ? statusBadgeResolver(entries[0]) : true);
         return "<div class='logo-carousel-single-travel'>" + travelItem + "</div>";
       }
       if (entries.length === 1 && !forceMarquee) {
-        return "<div class='logo-carousel-single'>" + renderCardCarouselItem(entries[0]) + "</div>";
+        return "<div class='logo-carousel-single'>" + renderCardCarouselItem(entries[0], statusBadgeResolver ? statusBadgeResolver(entries[0]) : true) + "</div>";
       }
 
     const baseEntries = entries.slice();
@@ -1179,17 +2576,31 @@
       ? repeatEntriesToLength(baseEntries, minItems)
       : baseEntries;
 
-      const items = renderEntries.map(renderCardCarouselItem).join("");
+      const items = renderEntries.map(function (entry) {
+        return renderCardCarouselItem(entry, statusBadgeResolver ? statusBadgeResolver(entry) : true);
+      }).join("");
       const trackClasses = ["carousel-track"];
       if (trackClass) trackClasses.push(trackClass);
       return "<div class='" + trackClasses.join(" ") + "'><div class='carousel-group'>" + items + "</div><div class='carousel-group' aria-hidden='true'>" + items + "</div></div>";
     }
 
-  function renderCardCarouselItem(entry) {
-      const isInscribed = entry.status === "Inscrito";
+  function renderCardCarouselItem(entry, badgeConfig) {
+      let showStatusBadge = true;
+      let statusText = entry.status || "Pre-inscrito";
+      let isInscribed = entry.status === "Inscrito";
+      if (typeof badgeConfig === "boolean") {
+        showStatusBadge = badgeConfig;
+      } else if (badgeConfig && typeof badgeConfig === "object") {
+        if (badgeConfig.showBadge === false) showStatusBadge = false;
+        if (badgeConfig.statusText) statusText = String(badgeConfig.statusText);
+        if (typeof badgeConfig.isInscribed === "boolean") isInscribed = badgeConfig.isInscribed;
+      }
       const itemClass = "team-logo-item section-logo-item" + (isInscribed ? " is-inscribed" : " is-pre");
-      const label = [entry.teamName, entry.categoryDisplay, entry.status].filter(Boolean).join(" · ");
-      return "<div class='" + itemClass + "' title='" + esc(label) + "'><img src='" + esc(entry.logoUrl || IPV_LOGO) + "' alt='" + esc(entry.teamName || "Equipo") + "' onerror=\"this.src='" + IPV_LOGO + "'\"><span class='section-logo-badge'>" + esc(entry.status || "Pre-inscrito") + "</span></div>";
+      const label = [entry.teamName, entry.categoryDisplay, statusText].filter(Boolean).join(" · ");
+      const badge = showStatusBadge === false
+        ? ""
+        : "<span class='section-logo-badge'>" + esc(statusText) + "</span>";
+      return "<div class='" + itemClass + "' title='" + esc(label) + "'><img src='" + esc(entry.logoUrl || IPV_LOGO) + "' alt='" + esc(entry.teamName || "Equipo") + "' onerror=\"this.src='" + IPV_LOGO + "'\">" + badge + "</div>";
     }
 
   function repeatEntriesToLength(entries, targetLength) {
@@ -1284,6 +2695,9 @@
   function getSectionACategories() {
     const profile = getActiveSourceProfile();
     if (profile && profile.displayCategories.length) return profile.displayCategories;
+    if (resolveViewMode(state.viewMode) === "real" && String(state.runtime.eventAlias || "ipv").toLowerCase() !== "ipv") {
+      return [];
+    }
     const fromLive = CATEGORY_ORDER.filter(function (category) {
       return getRenderableCategoryEntries(category).length > 0;
     });
@@ -1319,30 +2733,35 @@
   }
 
   function getActiveSourceProfile() {
+    if (resolveViewMode(state.viewMode) === "demo") return null;
     return state.sourceProfiles.find(function (profile) {
       return profile.email === state.activeSourceEmail;
     }) || null;
   }
 
   function getInitialSourceEmail() {
+    if (resolveViewMode(state.viewMode) === "demo") return "";
+    const urlEmail = normalizeEmail(state.runtime.urlParams && state.runtime.urlParams.urlEmail);
+    if (urlEmail && state.sourceProfiles.some(function (profile) { return profile.email === urlEmail; })) {
+      return urlEmail;
+    }
     const sessionEmail = normalizeEmail(state.loggedUser && state.loggedUser.email);
     if (sessionEmail && state.sourceProfiles.some(function (profile) { return profile.email === sessionEmail; })) {
       return sessionEmail;
     }
-    const params = new URLSearchParams(window.location.search);
-    const email = normalizeEmail(params.get("email") || "");
-    return state.sourceProfiles.some(function (profile) { return profile.email === email; }) ? email : "";
+    return "";
   }
 
   function getInitialViewMode() {
-    const saved = String(window.localStorage.getItem("hubSportLskViewMode") || "").trim().toLowerCase();
-    if (saved === "pre" || saved === "demo") return saved;
-    return shouldUseDemoData() ? "demo" : "pre";
+    const saved = String(window.localStorage.getItem("viewMode") || "").trim().toLowerCase();
+    if (saved === "real" || saved === "demo") return saved;
+    return shouldUseDemoData() ? "demo" : "real";
   }
 
   function syncUrl() {
     const url = new URL(window.location.href);
-    if (state.activeSourceEmail) url.searchParams.set("email", state.activeSourceEmail);
+    url.searchParams.set("event", String(state.runtime.eventAlias || "ipv").trim().toLowerCase());
+    if (resolveViewMode(state.viewMode) === "real" && state.activeSourceEmail) url.searchParams.set("email", state.activeSourceEmail);
     else url.searchParams.delete("email");
     window.history.replaceState({}, "", url.toString());
   }
@@ -1354,7 +2773,7 @@
   }
 
   function getSessionUser() {
-    return readJson(config.sessionStorageKey || "hub-sport-lsk-session", null);
+    return readJson(config.sessionStorageKey || "hub-sport-session", null);
   }
 
   function renderLoginTooltip() {
@@ -1573,6 +2992,15 @@
       .replace(/'/g, "&#39;");
   }
 
+  function escXml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
   function readJson(key, fallback) {
     try {
       const raw = window.localStorage.getItem(key);
@@ -1615,3 +3043,4 @@
     });
   }
 })();
+

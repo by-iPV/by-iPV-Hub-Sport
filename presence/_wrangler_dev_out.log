@@ -1,0 +1,13 @@
+
+ ⛅️ wrangler 4.81.0 (update available 4.84.1)
+─────────────────────────────────────────────
+Your Worker has access to the following bindings:
+Binding                                                       Resource            Mode
+env.PRESENCE_ROOM (PresenceRoom)                              Durable Object      local
+env.PRESENCE_DB (904c37c2-7519-4c02-85d8-82bf61e0bc66)        D1 Database         local
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://127.0.0.1:8787
+[wrangler:info] GET /health 200 OK (3ms)
+[wrangler:info] GET /presence/count 200 OK (50ms)
+[wrangler:info] GET /health 200 OK (2ms)

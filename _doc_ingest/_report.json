@@ -1,0 +1,32 @@
+[
+  {
+    "file": "Investigación estratégica de plataformas deportivas digitales.pdf",
+    "pages": 8,
+    "chars": 21973,
+    "sample": "Investigación estratégica de plataformas deportivas digitales Analizamos tres plataformas de gestión deportiva: Sporty, PDGD (por iPV) y Clupik. Sporty es una solución enfocada en gestionar torneos y ligas con múltiples deportes; Clupik es una plataforma integral de club y competiciones usada por miles de clubes (Web, app, inscripciones, comunicación, tiendas); PDGD es un prototipo emergente ligero basado en GitHub Pages y Google Sheets para ligas comunitarias. A lo largo del análisis usaremos marcos de estrategia de plataformas, efectos de red y economía de software para evaluar funcionalidad, tecnología y experiencias de usuario de cada una. 1. Benchmark funcional Gestión de torneos y competiciones: Sporty ofrece manejo completo de eventos deportivos: creación de competencias multideporte, definición de fases (grupo, eliminación directa, perdedores, etc.), generación de brackets y estadísticas en tiempo real. Incluye administrador de equipos, canchas, calendarios y even páginas web p"
+  },
+  {
+    "file": "Portafolio de Servicios Deportivos Digitales – PDGD.pdf",
+    "pages": 5,
+    "chars": 10638,
+    "sample": "Portafolio de Servicios Deportivos Digitales – PDGD Benchmark de plataformas similares En el ámbito de la gestión deportiva digital existen múltiples soluciones consolidadas. Por ejemplo, Enjore se promociona como “la mejor plataforma de gestión de torneos y campeonatos de voleibol” , ofreciendo inscripciones de equipos, generación automática de calendarios, clasificaciones y estadísticas. La empresa 360Player ofrece una “plataforma todo en uno” para clubes de voleibol que simplifica comunicación, finanzas y crecimiento de jugadores en una única interfaz. Para competiciones puntuales, Tournify propone planes gratuitos y de pago: un paquete básico sin costo (hasta 8 equipos) y planes avanzados de €40 a €120 por evento. En España, Clupik abarca clubes y federaciones, con tarifas desde 39€ hasta 99€ mensuales en sus planes básico y elite. En México y LatAm existen además soluciones más focalizadas (por ejemplo, Arcanix ofrece licencias únicas de ~$5,000 MXN sin cuotas mensuales, y SportyP"
+  },
+  {
+    "file": "Centro de Partido en Vivo - by iPV.pdf",
+    "pages": 22,
+    "chars": 12179,
+    "sample": "1 ⃣ PROMPT PARA IA (IMAGEN CONCEPTUAL – VISTA EN PRODUCCIÓN) Este prompt está pensado para una IA generadora de imágenes , no para HTML todavía. Representa cómo se vería ya en producción la página web. 🎨 Prompt sugerido (listo para copiar) Imagen fotorrealista de una página web moderna de voleibol en producción , vista tipo dashboard en un monitor grande. En el centro , una tarjeta principal grande mostrando el partido actual con marcador en tiempo real, nombres de equipos, icono de balón de voleibol y estilo premium Black & Gold (#000000 y #FBB400). Arriba , una tarjeta más pequeña con el partido anterior , con marcador final y estado “Finalizado”. Abajo , una tarjeta más pequeña con el siguiente partido , indicando “Próximo” y hora de inicio. En el lado derecho , una columna vertical con tarjetas pequeñas PLUS , mostrando avisos en tiempo real de aficionados (ej. “Apoya al equipo”, “Tiempo fuera”), donde se ven el mensaje actual y los dos mensajes anteriores atenuados. En el lado izq"
+  },
+  {
+    "file": "Clupik Servicios Deportivos Digitales.pdf",
+    "pages": 9,
+    "chars": 8204,
+    "sample": "Administración Gestiona tu base de datos, organiza a tus usuarios, asígnales roles y créales un usuario en la aplicación Administradores Número de usuarios con rol administrador para gestionar tu organización Inscripciones Módulo para configurar formularios de inscripción para tus usuarios. Vinculado a pago online Listados Crea listados personalizados para ordenar a los usuarios de tu organización Exportar a Excel Exporta listados de usuarios, movimientos, inscripciones recibidas, etc. Personalización de permisos Configura qué usuarios pueden realizar publicaciones, comentar y enviar notificaciones Área deportiva Gestiona el área deportiva de tu organización Secciones Organiza tus equipos en secciones de diferentes deportes Funcionalidad Número de equipos por temporada que puedes gestionar en tu organización Gestor de competiciones Gestiona tu propia competición, crea partidos y lleva la clasificación Entrenamientos Programa los entrenamientos de tus equipos en el calendario y añade un"
+  },
+  {
+    "file": "Documento Base - Evolutivo PDGD ESTRATEGIA INTEGRAL DE EVOLUCIÓN COMERCIAL Y TECNOLÓGICA.pdf",
+    "pages": 10,
+    "chars": 4203,
+    "sample": "📄 DOCUMENTO BASE ESTRATEGIA INTEGRAL DE EVOLUCIÓN COMERCIAL Y TECNOLÓGICA PDGD by iPV — MODELO ESCALABLE POR VERSIONES 1 ⃣ PROPÓSITO DEL DOCUMENTO Definir un marco operativo que permita: ● Comercializar de inmediato (versión funcional mínima) ● Evolucionar el producto por versiones controladas ● Alinear marketing + tecnología + operación ● Evitar sobreconstrucción inicial ● Maximizar adopción en LATAM (voleibol) 2 ⃣ PRINCIPIO RECTOR 👉 Primero vender → luego sofisticar NO construir todo. Construir lo necesario para: ✔ cobrar ✔ operar ✔ demostrar valor 3 ⃣ MODELO DE EVOLUCIÓN (ROADMAP COMERCIAL + PRODUCTO)\n🔄 ESTRUCTURA POR VERSIONES Versión Objetivo Enfoque V1 Venta inmediata Operación básica V2 Profesionalización Experiencia V3 Escalamiento Monetización V4 Dominio Ecosistema 4 ⃣ DEFINICIÓN POR VERSIONES 🟢 V1 — OPERACIÓN VENDIBLE (INMEDIATA) 🎯 Objetivo Cerrar ventas YA 🔧 Funcionalidades mínimas ✔ Registro de equipos ✔ Calendario automático ✔ Tabla de posiciones ✔ Brackets ✔ Pódium ✔ Publ"
+  }
+]

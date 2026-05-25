@@ -453,7 +453,19 @@
     const url = String(config.appsScriptUrl || "").trim();
     if (!url) throw new Error("appsScriptUrl no configurado");
     const alias = String(eventAlias || state.runtime.eventAlias || "ipv").trim().toLowerCase();
-    const response = await fetch(url + "?action=bootstrap&event=" + encodeURIComponent(alias));
+    const spreadsheetId = String((config.events && config.events.spreadsheetId) || "").trim();
+	const preRegisteredSheet = String((config.dataSource && config.dataSource.sheets && config.dataSource.sheets.preRegistered) || "").trim();
+	const teamsSheet = String((config.dataSource && config.dataSource.sheets && config.dataSource.sheets.teams) || "").trim();
+
+	const query = [
+	  "action=bootstrap",
+	  "event=" + encodeURIComponent(alias),
+	  spreadsheetId ? "spreadsheetId=" + encodeURIComponent(spreadsheetId) : "",
+	  preRegisteredSheet ? "preRegisteredSheet=" + encodeURIComponent(preRegisteredSheet) : "",
+	  teamsSheet ? "teamsSheet=" + encodeURIComponent(teamsSheet) : ""
+	].filter(Boolean).join("&");
+
+	const response = await fetch(url + "?" + query);
     const json = await response.json();
     const payload = unwrapResponse(json);
     const preRowsRaw = (payload.preRegisteredTeams || payload.equiposInscritos || payload.preRegistered || payload.inscritos || []).filter(function (row) {
